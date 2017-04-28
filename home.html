@@ -19,12 +19,32 @@ li a {
 
 li a:hover:not(.active) {background-color: #ddd;} 
 li a.active {color: white; background-color: #4CAF50;}
+
+input[type=text] {
+    width: 130px;
+    box-sizing: border-box;
+    border: 0 solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #f3f3f3;
+    background-image: url('searchicon.png');
+    background-position: 10px 10px; 
+    background-repeat: no-repeat;
+    padding: 16px 20px 16px 20px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+}
+
+input[type=text]:focus {
+    width: 600px;
+}
 </style>
 </head>
 <body>
 
 	<ul>
     	<li><a class="active" href="home.html">Home</a></li>
+    	<li><input type="text" name="search" placeholder="Search.."></li>
         <li  style="float:right"><a href="#Sign_in">Sign in</a></li>
         <li  style="float:right"><a href="#CreateProject">Start a project</a></li>
     </ul>
