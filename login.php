@@ -1,27 +1,60 @@
 <?php
-if($_GET['action'] == "logout"){
-	unset($_SESSION['uid']);
-	echo 'Logout successed! Click here to <a href="home.html">go back.</a>';
-	exit;
-}
-
-//login
-if(!isset($_POST['submit'])){
-	exit('Unauthorized access!');
-}
-$email = $_POST['email'];
-$password = $_POST['password'];
-
-include('conn.php');
-
-$check_query = mysql_query("SELECT Uid FROM User WHERE email='$email' AND password='$password' limit 1");
-if($result = mysql_fetch_array($check_query)){
-	$_SESSION['uid'] = $result['Uid'];
-	echo 'Welcome, enter <a href="my.php">personal page</a><br />';
-	echo 'Click here to <a href="login.php?action=logout">logout</a><br />';
-	exit;
-} else {
-	exit('Login failed! Click here to go <a href="javascript:history.back(-1);">back</a>.');
-}
-
+   session_start();
+   $db=mysqli_connect("127.0.0.1","root","yuqi00","Final");
+   if(isset($_POST['login_btn']))
+   {
+      $email = $_POST['email'];
+      $password = $_POST['password'];
+      $sql = "SELECT * FROM User WHERE email='$email' AND password='$password'";
+      $result = mysqli_query($db,$sql);
+      if(mysqli_num_rows($result)==1)
+      {
+         $_SESSION['message']="You are now Logged in";
+         $_SESSION['email'] = $email;
+         header("location:home.html");
+      } 
+      else 
+      {
+         $_SESSION['message']="Username and Password combiation incorrect";
+      }
+   }
 ?>
+
+<!DOCTYPE html>
+<html>   
+   <head>
+      <title>Sign in</title>
+      <link rel="stylesheet" type="text/css" href="style.css"/>      
+   </head>  
+   <body>
+   <?php
+    if(isset($_SESSION['message']))
+    {
+         echo "<div id='error_msg'>".$_SESSION['message']."</div>";
+         unset($_SESSION['message']);
+    }
+   ?>   
+   
+      <form action = "login.php" method = "post">
+         <table>
+            <tr>
+               <td>Email : </td>
+               <td><input type = "email" name = "email" class="textInput" required autofocus></td>
+            </tr>
+            <tr>
+               <td>Password : </td>
+               <td><input type = "password" name = "password" class="textInput" required></td>
+            </tr>
+            <tr>
+               <td></td>
+               <td><input type="submit" name="login_btn" class="Log In"></td>
+            </tr>
+            <tr>
+               <td>Don't have an account?</td>
+               <td><a href="register.php">Rigister</a></td>
+            </tr>
+         </table>
+
+      </form>          
+</body>
+</html>

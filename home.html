@@ -46,10 +46,13 @@ input[type=text]:focus {
     	<li><a class="active" href="home.html">Home</a></li>
     	<li><input type="text" name="search" placeholder="Search.."></li>
     	<li><input type="submit" name="search_submit" value="Go!"</li>
-        <li  style="float:right"><a href="login.html">Sign in</a></li>
+        <li  style="float:right"><a href="login.php">Sign in</a></li>
         <li  style="float:right"><a href="project.html">Start a project</a></li>
     </ul>
-
+<div>
+    <h4>Welcome <?php echo $_SESSION['name']; ?></h4></div>
+</div>
+<a href="logout.php">Log Out</a>
 
 </body>
 </html>
