@@ -1,3 +1,20 @@
+<?php
+    session_start();
+    $db=mysqli_connect("127.0.0.1","root","yuqi00","Final");
+    if (!$db) 
+    {
+        die("Connection failed: " . mysqli_connect_error());
+    } 
+    $uid=$_SESSION['uid'];
+    $query="SELECT cardnum FROM cardownership WHERE uid='$uid'";
+    $result=mysqli_query($db,$query);
+    $options="";
+    while($row=mysqli_fetch_array($result))
+    {
+        $options=$options."<option>$row[1]</option>";
+    }
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -58,8 +75,7 @@
                 <p>
                     Choose card:
                 <select>
-                    <option>** 3635</option>
-                    <option>** 9372</option>
+                    <?php echo $options; ?>
                 </select>
                     / <a href="addcard.html"> Add New Card</a>
                 </p>

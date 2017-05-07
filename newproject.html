@@ -42,14 +42,14 @@
 </nav>
 
 <div class="contact-clean">
-    <form method="post">
+    <form method="post" action="newproject.php">
         <h2 class="text-center">Publish your Project</h2>
         <div class="form-group">
             <input class="form-control" type="text" name="name" placeholder="Name"></div>
         <div class="form-group">
-            <input class="form-control" type="text" name="minimum" placeholder="Minimum amount of money in need"></div>
+            <input class="form-control" type="number" name="minimum" placeholder="Minimum amount of money in need"></div>
         <div class="form-group">
-            <input class="form-control" type="text" name="maximum" placeholder="Maximum amount of money in need"></div>
+            <input class="form-control" type="number" name="maximum" placeholder="Maximum amount of money in need"></div>
         <div class="form-group">
             <div class="row">
                 <div class="col-sm-12">
@@ -105,9 +105,9 @@
                         <option value="2017" selected="">2017</option>
                         <option value="2018">2018</option>
                         <option value="2019">2019</option>
-                        <option value="2019">2020</option>
-                        <option value="2019">2021</option>
-                        <option value="2019">2022</option>
+                        <option value="2020">2020</option>
+                        <option value="2021">2021</option>
+                        <option value="2022">2022</option>
                     </select>
                 </div>
             </div></div>
@@ -115,7 +115,7 @@
             <textarea class="form-control" rows="14" name="description" placeholder="Description"></textarea>
         </div>
         <div class="form-group">
-            <center><button class="btn btn-primary" type="submit"> CREATE </button></center>
+            <center><button class="btn btn-primary" type="submit" name="project_btn"> CREATE </button></center>
         </div>
     </form>
 </div>

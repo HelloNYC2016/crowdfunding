@@ -1,0 +1,8 @@
+.profile-header-container{margin:0 auto;text-align:center;background-color:#f1f7fc}
+.profile-header-img{padding:54px}
+.profile-header-img>img.img-circle{width:120px;height:120px;border:2px solid #F4476B}
+.profile-header{margin-top:43px}
+.rank-label-container{margin-top:-19px;text-align:center}
+.label.label-default.rank-label{background-color:#F4476B;padding:5px 10px;border-radius:27px}
+.link{
+    color: #FFF;}
