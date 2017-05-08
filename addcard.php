@@ -41,5 +41,6 @@ if(isset($_POST['card_btn']))
       }
       //else{}
     }
+    header("location:donate.html");
 }
 ?>

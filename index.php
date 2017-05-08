@@ -1,3 +1,6 @@
+<?php 
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,30 +38,16 @@
 <!-- NAVBAR
 ================================================== -->
 <body>
-<nav class="navbar navbar-default "  role="navigation">
-  <div class="container-fluid">
-    <!-- Brand -->
-    <div class="navbar-header">
-      <a class="navbar-brand" href="index.html">Fundraiser</a>
-    </div>
-    <!-- Search -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <form class="navbar-form navbar-left" role="search" action="#">
-        <div class="form-group">
-          <div class="input-group">
-            <span class="input-group-addon"><i class="fa fa-search"></i></span>
-            <input type="text" class="form-control" placeholder="Search for something">
-          </div>
-        </div>
-      </form>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="login.html">Build fundraiser</a></li>
-        <li><a href="login.html">Log In</a></li>
-        <li><a href="signup.html">Sign Up</a></li>
-      </ul>
-    </div>
-    <!-- /.navbar-collapse -->
-  </div>
+<?php
+if(isset($_SESSION['login']) && $_SESSION['login']==true)
+  {
+    include "nav-login.php";
+  }
+  else
+  {
+    include "nav-sign.php";
+  }
+   ?>
 
   <!-- Carousel
   ================================================== -->
@@ -130,10 +119,12 @@
   $result=mysqli_query($db,$query);
   $name=array();
   $description=array();
+  $pid=array();
   while($row=mysqli_fetch_array($result))
   {
     $name[]=$row['name'];
     $description[]=$row['description'];
+    $pid[]=$row['pid'];
   }
   ?>
 
@@ -145,19 +136,19 @@
         <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="140" height="140">
         <h2> <?php print_r($name[0]); ?></h2>
         <p> <?php print_r($description[0]); ?></p>
-        <p><a class="btn btn-default" href="project.html" role="button" >View details &raquo;</a></p>
+        <p><a href="<?php echo "project.php?id=".$pid[0] ?>">View details</a></p>
       </div><!-- /.col-lg-4 -->
       <div class="col-lg-4">
         <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="140" height="140">
         <h2> <?php print_r($name[1]); ?></h2>
         <p> <?php print_r($description[1]); ?></p>
-        <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+        <p><a href="<?php echo "project.php?id=".$pid[1] ?>">View details</a></p>
       </div><!-- /.col-lg-4 -->
       <div class="col-lg-4">
         <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="140" height="140">
         <h2> <?php print_r($name[2]); ?></h2>
         <p><?php print_r($description[2]); ?></p>
-        <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+        <p><a href="<?php echo "project.php?id=".$pid[2] ?>">View details</a></p>
       </div><!-- /.col-lg-4 -->
     </div><!-- /.row -->
 
