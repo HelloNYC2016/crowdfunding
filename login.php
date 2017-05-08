@@ -15,7 +15,11 @@
       if(mysqli_num_rows($result)==1)
       {
          $_SESSION['login']= true;
-         $_SESSION['email'] = $email;
+         while($row=mysqli_fetch_array($result))
+         {
+            $uid=$row['uid'];
+         }
+         $_SESSION['uid'] = $uid;
          header("location:index.php");
       } 
       else 

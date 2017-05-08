@@ -1,5 +1,15 @@
 <?php
-$pid = $_GET['id'];
+session_start();
+if(isset($_GET['id']))
+{
+    $pid = $_GET['id'];
+}
+else
+{
+    $pid = $_SESSION['pid'];
+}
+$_SESSION['pid']=$pid;
+
 $db = mysqli_connect("127.0.0.1","root","yuqi00","Final");
    if (!$db) 
    {
@@ -40,38 +50,17 @@ while($row=mysqli_fetch_array($result))
 </head>
 
 <body>
-<nav class="navbar navbar-default "  role="navigation">
-    <div class="container-fluid">
-        <!-- Brand -->
-        <div class="navbar-header">
-            <a class="navbar-brand" href="index.html">Fundraiser</a>
-        </div>
-        <!-- Search -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <form class="navbar-form navbar-left" role="search" action="#">
-                <div class="form-group">
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                        <input type="text" class="form-control" placeholder="Search for something">
-                    </div>
-                </div>
-            </form>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="newproject.html">Build fundraiser</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Me <span class="caret"></span></a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Profile</a></li>
-                        <li><a href="#">Message</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li class="divider"></li>
-                        <li><a href="logout.php">Log Out</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<?php
+if(isset($_SESSION['login']) && $_SESSION['login']==true)
+  {
+    include "nav-login.php";
+  }
+  else
+  {
+    include "nav-sign.php";
+  }
+   ?>
+   
 <ol class="breadcrumb">
     <li class="active"><span>Project </span></li>
     <li><a href="<?php echo "update.php?id=".$pid ?>"><span>Updates </span></a></li>
@@ -82,7 +71,7 @@ while($row=mysqli_fetch_array($result))
         <div class="col-md-7">
             <h2><?php echo $name; ?></h2>
             <p><?php echo $description; ?> </p>
-            <a class="btn btn-primary" href="donate.html" role="button">Donate</a>
+            <a class="btn btn-primary" href="donate.php" role="button">Donate</a>
             <button class="btn btn-info" onclick="myFunction()">Follow</button>
             <script>
                 function myFunction() {
@@ -100,7 +89,7 @@ while($row=mysqli_fetch_array($result))
             <p>Project Popularity: <strong class="text-danger">Hot </strong> </p>
             <div class="progress">
                 <?php $percent=100*$moneyraised/$maximum; ?>
-                <div class="progress-bar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $percent; ?>%"><?php echo $percent; ?>%</div>
+                <div class="progress-bar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $percent; ?>%"><?php echo ceil($percent); ?>%</div>
             </div>
             <div class="row">
                 <div class="col-md-6">

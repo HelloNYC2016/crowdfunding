@@ -10,20 +10,19 @@ if(isset($_POST['card_btn']))
     //get the CC information
     $uid=$_SESSION['uid'];
     $cardNumber=$_POST['cardNumber'];
-    $cardExpiry=$_POST['cardExpiry'];  
+    $year=$_POST['year'];
+    $month=$_POST['month'];  
     $cardCVV=$_POST['cardCVV'];
     $holdername=$_POST['holdername'];
-
     //check whether the card already exists
     $check1 = "SELECT * FROM creditcard WHERE cardnum = '$cardNumber'";
     $result1 = mysqli_query($db, $check1);
     $check2 = "SELECT * FROM cardownership WHERE cardnum = '$cardNumber' and uid='$uid'";
     $result2 = mysqli_query($db, $check2);
-
     //card not exist in creditcard table
     if(mysqli_num_rows($result1)!=1)
     {      
-      $sql1 = "INSERT INTO creditcard(cardnum,holdername,expiredate,CVV) VALUES('$cardNumber','$holdername','$cardExpiry','$cardCVV')";
+      $sql1 = "INSERT INTO creditcard(cardnum,holdername,year,month,CVV) VALUES('$cardNumber','$holdername','$year','$month','$cardCVV')";
       mysqli_query($db,$sql1);
     
       $sql2 = "INSERT INTO cardownership(uid,cardnum) VALUES('$uid','$cardNumber')";
@@ -41,6 +40,6 @@ if(isset($_POST['card_btn']))
       }
       //else{}
     }
-    header("location:donate.html");
+    header("location:donate.php"); 
 }
 ?>

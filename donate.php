@@ -11,7 +11,9 @@
     $options="";
     while($row=mysqli_fetch_array($result))
     {
-        $options=$options."<option>$row[1]</option>";
+        $cardnum=$row['cardnum'];
+        $cardnum=str_pad(substr($cardnum, -4), strlen($cardnum), '*', STR_PAD_LEFT);
+        $options=$options."<option>$cardnum</option>";
     }
 ?>
 
@@ -41,7 +43,7 @@
         </div>
         <!-- Search -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <form class="navbar-form navbar-left" role="search" action="donate.php">
+            <form class="navbar-form navbar-left" role="search" action="#">
                 <div class="form-group">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-search"></i></span>
@@ -82,9 +84,9 @@
             </form>
 
         </div>
-        <form class="form-inline" method="post" action="donate.php">
+        <form class="form-inline" method="post" action="raise.php">
             <div class="form-group">
-                <input class="form-control" type="text" name="amount" placeholder="$">
+                <input class="form-control" type="number" name="amount" placeholder="$" required>
             </div>
             <div class="form-group">
                 <button class="btn btn-primary" type="submit">Donate </button>
