@@ -25,7 +25,7 @@ session_start();
 <?php
 if(isset($_SESSION['login']) && $_SESSION['login']==true)
 {
-    include "nav-login.php";
+    include "nav-login.html";
 }
 else
 {
@@ -33,21 +33,24 @@ else
 }
 ?>
 
-
-</br></br>
-
 <!-- Print All Projects-->
 <?php
-$db=mysqli_connect("127.0.0.1","root","yuqi00","Final");
+$db=mysqli_connect("127.0.0.1","root","1025","crowdfunding");
 if (!$db)
 {
     die("Connection failed: " . mysqli_connect_error());
 }
 if(isset($_POST['keyword'])) {
     $keyword = $_POST['keyword'];
+    echo "</br>";
+    echo "<h3><center>Result For : $keyword</center></h3>";
+    echo "</br>";
     $query = "SELECT p.name, p.description, p.pid FROM Project p, Tag t where p.pid = t.pid and (t.tname = '$keyword' or p.description LIKE '%$keyword%' or p.name LIKE '%$keyword%')";
     printresult($db, $query);
 } else {
+    echo "</br>";
+    echo "<h3><center>ALL</center></h3>";
+    echo "</br>";
     $query = "SELECT * from project";
     printresult($db, $query);
 }
