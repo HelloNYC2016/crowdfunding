@@ -14,5 +14,5 @@ $db = mysqli_connect("127.0.0.1","root","yuqi00","Final");
 
 $sql="INSERT INTO pledge(uid,pid,time,amount) VALUES('$uid','$pid','$time','$amount')";
 mysqli_query($db, $sql);
-header("location:project.php");
+header("location:project.php?id={$pid}");
 ?>

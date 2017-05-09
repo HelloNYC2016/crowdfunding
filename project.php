@@ -1,16 +1,20 @@
 <?php
+session_start();
 $pid = $_GET['id'];
+$_SESSION['pid']=$pid;
 $db = mysqli_connect("127.0.0.1","root","yuqi00","Final");
 if (!$db)
 {
     die("Connection failed: " . mysqli_connect_error());
 }
 
-$sql = "SELECT * FROM Project WHERE pid='$pid'";
+$sql = "SELECT * FROM Project p, User u WHERE p.pid='$pid' AND u.uid=p.uid";
 $result = mysqli_query($db,$sql);
 while($row=mysqli_fetch_array($result))
 {
-    $name=$row['name'];
+    $name=$row[2];
+    $owner=$row[13];
+    $id=$row['uid'];
     $description=$row['description'];
     $moneyraised=$row['moneyraised'];
     $minimum=$row['minimum'];
@@ -86,8 +90,9 @@ $total = $row['total'];
             <img class="img-responsive" src="assets/images/suit_jacket.jpg"></div>
         <div class="col-md-7">
             <h2><?php echo $name; ?></h2>
+            <p>Post by <?php echo "<a href='home.php?id={$id}'>{$owner}</a>"; ?></h2>
             <p><?php echo $description; ?> </p >
-            <a class="btn btn-primary" href="donate.html" role="button">Donate</a >
+            <a class="btn btn-primary" href="donate.php" role="button">Donate</a >
             <button class="btn btn-info" onclick="myFunction()">Follow</button>
             <script>
                 function myFunction() {

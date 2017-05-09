@@ -1,7 +1,6 @@
 <?php
 session_start();
-$uid=$_SESSION['uid'];
-$_SESSION['uid']=$uid;
+$uid=$_GET['id'];
 $db = mysqli_connect("127.0.0.1","root","yuqi00","Final");
    if (!$db) 
    {
@@ -56,7 +55,12 @@ while($row=mysqli_fetch_array($result))
                 <p>Name: <?php echo $name;?></p >
                 <p>Hometown: <?php echo $hometown;?></p >
                 <p>Interest: <?php echo $interest;?></p >
-                <p><a href="editprofile.php">Edit</a></p>
+                <?php
+    if($_GET['id']==$_SESSION['uid'])
+   {
+    echo "<p><a href='editprofile.php'>Edit</a></p>";
+   }
+   ?>
             </div>
 
     <div class="side-block">
@@ -93,8 +97,8 @@ while($row=mysqli_fetch_array($result))
 
         <div class="col-md-6 col-md-offset-0">
             <ol class="breadcrumb">
-                <li><a href="home.php"><span>My Projects </span></a></li>
-                <li class="active"><span>My Comments </span></li>
+                <li><?php echo "<a href='home.php?id={$_GET['id']}'>Projects</a>"; ?></li>
+                <li class="active"><span>Comments </span></li>
             </ol>
             <div class="media">
                 <div class="media-body">

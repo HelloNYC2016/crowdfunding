@@ -40,7 +40,7 @@ if(isset($_POST['edit_btn']))
 
     $sql = "UPDATE user SET name='$newname', hometown='$newhometown', interest='$newinterest' where uid='$uid'";
     mysqli_query($db,$sql);
-    header("location:home.php");
+    header("location:home.php?id={$uid}");
 }
 ?>
 <html>

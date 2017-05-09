@@ -35,38 +35,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/journal/bootstrap.min.css">
 </head>
 <body>
-<nav class="navbar navbar-default "  role="navigation">
-    <div class="container-fluid">
-        <!-- Brand -->
-        <div class="navbar-header">
-            <a class="navbar-brand" href="index.php">Fundraiser</a>
-        </div>
-        <!-- Search -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <form class="navbar-form navbar-left" role="search" action="#">
-                <div class="form-group">
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                        <input type="text" class="form-control" placeholder="Search for something">
-                    </div>
-                </div>
-            </form>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="new">Build fundraiser</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Me <span class="caret"></span></a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Profile</a></li>
-                        <li><a href="#">Message</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li class="divider"></li>
-                        <li><a href="logout.php">Log Out</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<?php include "nav-login.php"; ?>
 
 <div class="newsletter-subscribe" style="background-color:#f1f7fc;">
     <div class="container">

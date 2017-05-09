@@ -45,7 +45,6 @@ if (!$db)
 }
 if(isset($_POST['keyword'])) {
     $keyword = $_POST['keyword'];
-    echo $keyword;
     $query = "SELECT p.name, p.description, p.pid FROM Project p, Tag t where p.pid = t.pid and (t.tname = '$keyword' or p.description LIKE '%$keyword%' or p.name LIKE '%$keyword%')";
     printresult($db, $query);
 } else {
