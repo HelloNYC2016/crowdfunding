@@ -20,7 +20,7 @@
     <div class="container-fluid">
         <!-- Brand -->
         <div class="navbar-header">
-            <a class="navbar-brand" href="index.html">Raise Me Up</a>
+            <a class="navbar-brand" href="index.php">Raise Me Up</a>
         </div>
         <!-- Search -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">

@@ -20,7 +20,12 @@ if(isset($_POST['setname_btn']))
       {
             $sql1="UPDATE user SET username='$username' WHERE email='$email'";
             mysqli_query($db, $sql1);
-            header("location:home.html");  //redirect home page
+            $sql2 = "SELECT uid FROM User WHERE username='$username'";
+            $result2 = mysqli_query($db,$sql2);
+            $row=mysqli_fetch_array($result2);
+            $_SESSION['uid']=$row['uid'];
+            $_SESSION['login']=true;
+            header("location:index.php");  //redirect home page
       }
    }
      

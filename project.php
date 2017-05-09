@@ -158,16 +158,17 @@ if(isset($_SESSION['login']) && $_SESSION['login']==true)
                 $user=$row2['username'];
                 echo "<h4 class='media-heading'>$title</h4>";
                 echo "<p>$content</p >";
-                echo "<p><span class='reviewer-name'><strong>$user</strong></span><span class='review-date'>$time</span></p >";
+                echo "<p><span class='reviewer-name'><strong><a href='home.php?id={$row2['uid']}'>{$user}</a></strong></span><span class='review-date'>$time</span></p >";
                 echo "</br>";
             }
             ?>
         </div>
         <br>
-        <form action="#">
-            <textarea class="form-control" rows="6" name="comment" placeholder="Comment"></textarea>
+        <form action="postcom.php" method="POST">
+            <textarea class="form-control" rows="1" name="title" placeholder="Title" ></textarea>
+            <textarea class="form-control" rows="6" name="content" placeholder="Comment"></textarea>
             <br>
-            <button class="btn btn-primary" type="submit" name="comment_btn">Submit</button>
+            <input class="btn btn-info" type="submit">
         </form>
     </div>
     <footer class="site-footer">
