@@ -65,8 +65,23 @@ while($row=mysqli_fetch_array($result))
  <div class="profile-header-img">
   <img class="img-circle" src="assets/images/photo.jpg"/>
   <div class="rank-label-container">
-   <span class="label label-default rank-label"><a class="link" href="#"> 5 follows</a ></span>
-   <span class="label label-default rank-label"><a class="link" href="#">7 follows</a ></span>
+    <?php 
+    if ($_GET['id']!=$_SESSION['uid'])
+    {
+      echo "<button class='btn btn-info' onclick='Function()'>Follow</button>";
+    }
+
+   ?>
+    <script>
+       function Function() {
+         alert("You have followed this user.");
+         <?php 
+             if ($_GET['id']!=$_SESSION['uid']){
+        $follow = "INSERT INTO Follow(uid,followerID) VALUES ('{$_GET['id']}', '{$_SESSION['uid']}')";
+        mysqli_query($db, $follow);}
+        ?>
+         }
+     </script>
   </div>
  </div>
 </div>
@@ -117,12 +132,26 @@ while($row=mysqli_fetch_array($result))
     }
     ?>
     </div>
+
+    <div class="side-block">
+    <p><b><center>Comments</center></b></p >
+    <?php 
+    $sql4 = "SELECT * FROM Comment c, Project p WHERE c.uid='$uid' AND c.pid=P.pid";
+    $result4 = mysqli_query($db,$sql4);
+    while($row4=mysqli_fetch_array($result4))
+    {
+      echo "<h4 class='media-heading'>{$row4['title']}</h4>";
+      echo "<p>{$row4['content']}</p>";
+       echo "<p><span class='project-name'><strong><a href='project.php?id={$row4["pid"]}'>{$row4['name']}</a></strong></span><span class='review-date'>{$row4['time']}</span></p>";
+    }
+    ?>
+    </div>
   </div>
 
   <div class="col-md-7 col-md-offset-0 container marketing">
    <ol class="breadcrumb">
     <li class="active"><span>Projects </span></li>
-    <li><?php echo "<a href='comments.php?id={$_GET['id']}'>Comments</a>"; ?></li>
+    <li><?php echo "<a href='comments.php?id={$_GET['id']}'>Messages</a>"; ?></li>
    </ol>
    <!-- Three columns of text below -->
    

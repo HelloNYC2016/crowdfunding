@@ -42,8 +42,23 @@ while($row=mysqli_fetch_array($result))
     <div class="profile-header-img">
         <img class="img-circle" src="assets/images/photo.jpg"/>
         <div class="rank-label-container">
-            <span class="label label-default rank-label"><a class="link" href="#"> 5 follows</a></span>
-            <span class="label label-default rank-label"><a class="link" href="#">7 follows</a></span>
+            <?php 
+    if ($_GET['id']!=$_SESSION['uid'])
+    {
+      echo "<button class='btn btn-info' onclick='Function()'>Follow</button>";
+    }
+
+   ?>
+    <script>
+       function Function() {
+         alert("You have followed this user.");
+         <?php 
+             if ($_GET['id']!=$_SESSION['uid']){
+        $follow = "INSERT INTO Follow(uid,followerID) VALUES ('{$_GET['id']}', '{$_SESSION['uid']}')";
+        mysqli_query($db, $follow);}
+        ?>
+         }
+     </script>
         </div>
     </div>
 </div>
@@ -93,24 +108,46 @@ while($row=mysqli_fetch_array($result))
     }
     ?>
 </div>
+<div class="side-block">
+    <p><b><center>Comments</center></b></p >
+    <?php 
+    $sql4 = "SELECT * FROM Comment c, Project p WHERE c.uid='$uid' AND c.pid=P.pid";
+    $result4 = mysqli_query($db,$sql4);
+    while($row4=mysqli_fetch_array($result4))
+    {
+      echo "<h4 class='media-heading'>{$row4['title']}</h4>";
+      echo "<p>{$row4['content']}</p>";
+       echo "<p><span class='project-name'><strong><a href='project.php?id={$row4["pid"]}'>{$row4['name']}</a></strong></span><span class='review-date'>{$row4['time']}</span></p>";
+    }
+    ?>
+    </div>
         </div>
 
         <div class="col-md-6 col-md-offset-0">
             <ol class="breadcrumb">
                 <li><?php echo "<a href='home.php?id={$_GET['id']}'>Projects</a>"; ?></li>
-                <li class="active"><span>Comments </span></li>
+                <li class="active"><span>Messages </span></li>
             </ol>
             <div class="media">
                 <div class="media-body">
 
                     <?php  
-                    $sql2 = "SELECT * FROM Comment c, Project p WHERE c.uid='$uid' AND c.pid=P.pid";
-                    $result2 = mysqli_query($db,$sql2);
-                    while($row2=mysqli_fetch_array($result2))
+                    $com = "SELECT c.content, f.uid, u.username, c.time, p.name, p.pid FROM Comment c, Follow f, User u, Project p WHERE f.followerID='$uid' AND f.uid=c.uid AND u.uid=c.uid AND p.pid=c.pid ORDER BY time desc";
+                    $comresult = mysqli_query($db,$com);
+                    while($comrow=mysqli_fetch_array($comresult))
                     {       
-                        echo "<h4 class='media-heading'>{$row2['title']}</h4>";
-                        echo "<p>{$row2['content']}</p>";
-                        echo "<p><span class='project-name'><strong><a href='project.php?id={$row2["pid"]}'>{$row2['name']}</a></strong></span><span class='review-date'>{$row2['time']}</span></p>";
+                        echo "<h4 class='media-heading'>Comments</h4>";
+                        echo "<p>{$comrow['content']}</p>";
+                        echo "<p><span class='project-name'><strong><a href='home.php?id={$comrow['uid']}'>{$comrow['username']}</a></strong></span><span class='project-name'><strong><a href='project.php?id={$comrow['pid']}'>@{$comrow['name']}</a></strong></span><span class='review-date'> {$comrow['time']}</span></p>";
+                    }
+                    $update = "SELECT p.name, p.pid, u.description, u.time FROM Updates u, likes l, Project p 
+                    WHERE l.pid=u.pid AND l.uid='$uid' AND l.pid=p.pid ORDER BY u.time desc";
+                    $updateresult = mysqli_query($db, $update);
+                    while($updaterow=mysqli_fetch_array($updateresult))
+                    {
+                        echo "<h4 class='media-heading'>Update</h4>";
+                        echo "<p>{$updaterow['description']}</p>";
+                        echo "<p><span class='project-name'><strong><a href='project.php?id={$updaterow['pid']}'>{$updaterow['name']}</a></strong></span><span class='review-date'>{$updaterow['time']}</span></p>";
                     }
                     ?>
                 </div>

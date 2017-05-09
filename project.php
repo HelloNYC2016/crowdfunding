@@ -48,38 +48,16 @@ $total = $row['total'];
 </head>
 
 <body>
-<nav class="navbar navbar-default "  role="navigation">
-    <div class="container-fluid">
-        <!-- Brand -->
-        <div class="navbar-header">
-            <a class="navbar-brand" href=" ">Fundraiser</a >
-        </div>
-        <!-- Search -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <form class="navbar-form navbar-left" role="search" action="#">
-                <div class="form-group">
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                        <input type="text" class="form-control" placeholder="Search for something">
-                    </div>
-                </div>
-            </form>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="newproject.html">Build fundraiser</a ></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Me <span class="caret"></span></a >
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="home.php">Profile</a ></li>
-                        <li><a href="#">Message</a ></li>
-                        <li><a href="#">Something else here</a ></li>
-                        <li class="divider"></li>
-                        <li><a href="logout.php">Log Out</a ></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<?php
+if(isset($_SESSION['login']) && $_SESSION['login']==true)
+  {
+    include "nav-login.php";
+  }
+  else
+  {
+    include "nav-sign.php";
+  }
+   ?>
 <ol class="breadcrumb">
     <li class="active"><span>Project </span></li>
     <li><a href="<?php echo "update.php?id=".$pid ?>"><span>Updates </span></a ></li>
@@ -93,10 +71,24 @@ $total = $row['total'];
             <p>Post by <?php echo "<a href='home.php?id={$id}'>{$owner}</a>"; ?></h2>
             <p><?php echo $description; ?> </p >
             <a class="btn btn-primary" href="donate.php" role="button">Donate</a >
-            <button class="btn btn-info" onclick="myFunction()">Follow</button>
+            <button class="btn btn-info" onclick="myFunction()">Like</button>
+            <?php 
+            $rate1 = "SELECT * From Pledge WHERE uid='{$_SESSION['uid']}' AND pid='$pid'";
+            $rate2 = "SELECT * From Rate WHERE uid='{$_SESSION['uid']}' AND pid='$pid'";
+            $find1 = mysqli_query($db, $rate1);
+            $find2 = mysqli_query($db, $rate2);
+            if(mysqli_num_rows($find1)!=0 and mysqli_num_rows($find2)==0)
+            {
+                echo "<a class='btn btn-primary' href='#' role='button'>Rate</a>";
+            }
+            ?>
             <script>
                 function myFunction() {
                     alert("You have followed this project.");
+                    <?php 
+                    $follow = "INSERT INTO Likes(uid,pid) VALUES ('{$_SESSION['uid']}', '$pid')";
+                    mysqli_query($db, $follow);
+                    ?>
                 }
             </script>
         </div>
@@ -131,7 +123,7 @@ $total = $row['total'];
         <div class="page-header">
             <h3>Donation</h3></div>
         <?php
-        $sql1 = "SELECT * FROM Pledge NATURAL JOIN User WHERE pid='$pid'";
+        $sql1 = "SELECT * FROM Pledge NATURAL JOIN User WHERE pid='$pid' ORDER BY time desc";
         $result1 = mysqli_query($db,$sql1);
         echo "<table class='table table-striped'><thead><tr><th>Donor</th><th>Amount</th><th>Time</th></tr></thead>";
         while($row1=mysqli_fetch_array($result1))

@@ -5,7 +5,13 @@
     {
         die("Connection failed: " . mysqli_connect_error());
     } 
+    if(isset($_SESSION['uid']))
+    {
     $uid=$_SESSION['uid'];
+}
+else {
+    header('Location: login.html');
+}
     $query="SELECT cardnum FROM cardownership WHERE uid='$uid'";
     $result=mysqli_query($db,$query);
     $options="";
