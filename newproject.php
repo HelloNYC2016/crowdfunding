@@ -1,7 +1,7 @@
 <?php
 session_start();
 date_default_timezone_set('America/New_York');
-$db=mysqli_connect("127.0.0.1","root","yuqi00","Final");
+$db=mysqli_connect("127.0.0.1","root","1025","crowdfunding");
 if (!$db) {
     die("Connection failed: " . mysqli_connect_error());
 } 

@@ -1,20 +1,10 @@
 <?php
-session_start();
-if(isset($_GET['id']))
+$pid = $_GET['id'];
+$db = mysqli_connect("127.0.0.1","root","1025","crowdfunding");
+if (!$db)
 {
-    $pid = $_GET['id'];
-}
-else
-{
-    $pid = $_SESSION['pid'];
-}
-$_SESSION['pid']=$pid;
-
-$db = mysqli_connect("127.0.0.1","root","yuqi00","Final");
-   if (!$db) 
-   {
     die("Connection failed: " . mysqli_connect_error());
-   } 
+}
 
 $sql = "SELECT * FROM Project WHERE pid='$pid'";
 $result = mysqli_query($db,$sql);
@@ -30,6 +20,10 @@ while($row=mysqli_fetch_array($result))
     $completetime=$row['completetime'];
     $status=$row['status'];
 }
+$sql = "SELECT count(*) as total FROM Pledge WHERE pid='$pid'";
+$result = mysqli_query($db,$sql);
+$row = mysqli_fetch_assoc($result);
+$total = $row['total'];
 ?>
 
 <!DOCTYPE html>
@@ -50,28 +44,50 @@ while($row=mysqli_fetch_array($result))
 </head>
 
 <body>
-<?php
-if(isset($_SESSION['login']) && $_SESSION['login']==true)
-  {
-    include "nav-login.php";
-  }
-  else
-  {
-    include "nav-sign.php";
-  }
-   ?>
-   
+<nav class="navbar navbar-default "  role="navigation">
+    <div class="container-fluid">
+        <!-- Brand -->
+        <div class="navbar-header">
+            <a class="navbar-brand" href=" ">Fundraiser</a >
+        </div>
+        <!-- Search -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <form class="navbar-form navbar-left" role="search" action="#">
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                        <input type="text" class="form-control" placeholder="Search for something">
+                    </div>
+                </div>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="newproject.html">Build fundraiser</a ></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Me <span class="caret"></span></a >
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Profile</a ></li>
+                        <li><a href="#">Message</a ></li>
+                        <li><a href="#">Something else here</a ></li>
+                        <li class="divider"></li>
+                        <li><a href="logout.php">Log Out</a ></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 <ol class="breadcrumb">
     <li class="active"><span>Project </span></li>
-    <li><a href="<?php echo "update.php?id=".$pid ?>"><span>Updates </span></a></li>
+    <li><a href="<?php echo "update.php?id=".$pid ?>"><span>Updates </span></a ></li>
 </ol>
 <div class="container">
     <div class="row product">
-        <div class="col-md-5 col-md-offset-0"><img class="img-responsive" src="assets/images/suit_jacket.jpg"></div>
+        <div class="col-md-5 col-md-offset-0">
+            <img class="img-responsive" src="assets/images/suit_jacket.jpg"></div>
         <div class="col-md-7">
             <h2><?php echo $name; ?></h2>
-            <p><?php echo $description; ?> </p>
-            <a class="btn btn-primary" href="donate.php" role="button">Donate</a>
+            <p><?php echo $description; ?> </p >
+            <a class="btn btn-primary" href="donate.html" role="button">Donate</a >
             <button class="btn btn-info" onclick="myFunction()">Follow</button>
             <script>
                 function myFunction() {
@@ -86,21 +102,21 @@ if(isset($_SESSION['login']) && $_SESSION['login']==true)
 
         <div class="panel-body">
             <h4><small class="display-inline-block pull-right"></small></h4>
-            <p>Project Popularity: <strong class="text-danger">Hot </strong> </p>
+            <p>Project Popularity: <strong class="text-danger">Hot </strong> </p >
             <div class="progress">
                 <?php $percent=100*$moneyraised/$maximum; ?>
-                <div class="progress-bar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $percent; ?>%"><?php echo ceil($percent); ?>%</div>
+                <div class="progress-bar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $percent; ?>%"><?php echo $percent; ?>%</div>
             </div>
             <div class="row">
                 <div class="col-md-6">
                     <p>Raised: $<?php echo $moneyraised; ?>
                         <br>
-                        <a href="donations.html"><small class="text-muted"><i class="fa fa-heart text-primary"></i> 128 Donations</small></a></p>
+                        <small class="text-muted"><i class="fa fa-heart text-primary"></i><?php echo $total; ?> Donations</small></p >
                 </div>
                 <div class="col-md-6">
-                     <p class="text-right">Goal: $<?php echo $maximum; ?>
+                    <p class="text-right">Goal: $<?php echo $maximum; ?>
                         <br>
-                        <small class="text-muted"><i class="fa fa-clock-o text-primary"></i> Ends <?php echo $endtime; ?></small></p>
+                        <small class="text-muted"><i class="fa fa-clock-o text-primary"></i> Ends <?php echo $endtime; ?></small></p >
                 </div>
             </div>
         </div>
@@ -126,50 +142,49 @@ if(isset($_SESSION['login']) && $_SESSION['login']==true)
             echo "</tr>";
             echo "</tbody>";
         }
-        echo "</table>";    
+        echo "</table>";
         ?>
     </div>
 
     <div class="page-header">
-    <h3>Reviews</h3></div>
+        <h3>Reviews</h3></div>
     <div class="media">
-    <div class="media-body">
-    <?php
-     $sql2 = "SELECT * FROM Comment NATURAL JOIN User WHERE pid='$pid' ORDER BY time DESC";
-     $result2 = mysqli_query($db,$sql2);
-     while($row2=mysqli_fetch_array($result2))
-     {
-        $title=$row2['title'];
-        $content=$row2['content'];
-        $time=$row2['time'];
-        $user=$row2['username'];
-        echo "<h4 class='media-heading'>$title</h4>";
-        echo "<p>$content</p>";
-        echo "<p><span class='reviewer-name'><strong>$user</strong></span><span class='review-date'>$time</span></p>";
-     }
-    ?>
-
-    </div>
-    <br>
-    <form action="#">
-        <textarea class="form-control" rows="6" name="comment" placeholder="Comment"></textarea>
-        <br>
-        <button class="btn btn-primary" type="submit" name="comment_btn">Submit</button>
-    </form>
-
-</div>
-<footer class="site-footer">
-    <div class="container">
-        <hr>
-        <div class="row">
-            <div class="col-sm-6">
-                <h5>Fund Raiser @ 2016</h5></div>
-            <div class="col-sm-6 social-icons"><a href="#"><i class="fa fa-facebook"></i></a><a href="#"><i class="fa fa-twitter"></i></a><a href="#"><i class="fa fa-instagram"></i></a></div>
+        <div class="media-body">
+            <?php
+            $sql2 = "SELECT * FROM Comment NATURAL JOIN User WHERE pid='$pid' ORDER BY time DESC";
+            $result2 = mysqli_query($db,$sql2);
+            while($row2=mysqli_fetch_array($result2))
+            {
+                $title=$row2['title'];
+                $content=$row2['content'];
+                $time=$row2['time'];
+                $user=$row2['username'];
+                echo "<h4 class='media-heading'>$title</h4>";
+                echo "<p>$content</p >";
+                echo "<p><span class='reviewer-name'><strong>$user</strong></span><span class='review-date'>$time</span></p >";
+                echo "</br>";
+            }
+            ?>
         </div>
+        <br>
+        <form action="#">
+            <textarea class="form-control" rows="6" name="comment" placeholder="Comment"></textarea>
+            <br>
+            <button class="btn btn-primary" type="submit" name="comment_btn">Submit</button>
+        </form>
     </div>
-</footer>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <footer class="site-footer">
+        <div class="container">
+            <hr>
+            <div class="row">
+                <div class="col-sm-6">
+                    <h5>Fund Raiser @ 2016</h5></div>
+                <div class="col-sm-6 social-icons"><a href="#"><i class="fa fa-facebook"></i></a ><a href="#"><i class="fa fa-twitter"></i></a ><a href="#"><i class="fa fa-instagram"></i></a ></div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </body>
 
 </html>
