@@ -1,6 +1,6 @@
 <?php
 $pid = $_GET['id'];
-$db = mysqli_connect("127.0.0.1","root","1025","crowdfunding");
+$db = mysqli_connect("127.0.0.1","root","yuqi00","Final");
 if (!$db)
 {
     die("Connection failed: " . mysqli_connect_error());
@@ -65,7 +65,7 @@ $total = $row['total'];
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Me <span class="caret"></span></a >
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Profile</a ></li>
+                        <li><a href="home.php">Profile</a ></li>
                         <li><a href="#">Message</a ></li>
                         <li><a href="#">Something else here</a ></li>
                         <li class="divider"></li>

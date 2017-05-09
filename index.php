@@ -52,7 +52,7 @@ if(isset($_SESSION['login']) && $_SESSION['login']==true)
               <h1 style="color:white">Make Your Dream Come True.</h1>
               <p>Share your idea and gain supports from all over the world. You are not alone chasing your dream, how about being a member of us today?
               </p>
-              <p><a class="btn btn-lg btn-primary" href="signup.html" role="button">Sign up today</a></p>
+              <p><a class="btn btn-lg btn-primary" href="signup.php" role="button">Sign up today</a></p>
             </div>
           </div>
       </div>
@@ -94,7 +94,7 @@ if(isset($_SESSION['login']) && $_SESSION['login']==true)
   
   <!-- Get Random Project-->
   <?php
-  $db=mysqli_connect("127.0.0.1","root","1025","crowdfunding");
+  $db=mysqli_connect("127.0.0.1","root","yuqi00","Final");
   if (!$db) 
   {
     die("Connection failed: " . mysqli_connect_error());

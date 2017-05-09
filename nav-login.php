@@ -6,11 +6,11 @@
 		</div>
 		<!-- Search -->
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-			<form class="navbar-form navbar-left" role="search" action="#">
+			<form class="navbar-form navbar-left" role="search" action="result.php" method="POST">
 				<div class="form-group">
 					<div class="input-group">
 						<span class="input-group-addon"><i class="fa fa-search"></i></span>
-						<input type="text" class="form-control" placeholder="Search for something">
+                        <input type="text" class="form-control" name="keyword" id="send_keyword" placeholder="Search for something">
 					</div>
 				</div>
 			</form>

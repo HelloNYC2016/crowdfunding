@@ -1,6 +1,7 @@
 <?php
 session_start();
 $uid=$_SESSION['uid'];
+$_SESSION['uid']=$uid;
 $db = mysqli_connect("127.0.0.1","root","yuqi00","Final");
    if (!$db) 
    {
@@ -60,38 +61,7 @@ while($row=mysqli_fetch_array($result))
  <link rel="stylesheet" href="assets/css/user.css">
 </head>
 <body>
-<nav class="navbar navbar-default "  role="navigation">
- <div class="container-fluid">
-  <!-- Brand -->
-  <div class="navbar-header">
-   <a class="navbar-brand" href="index.php">Fundraiser</a >
-  </div>
-  <!-- Search -->
-  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-   <form class="navbar-form navbar-left" role="search" action="#">
-    <div class="form-group">
-     <div class="input-group">
-      <span class="input-group-addon"><i class="fa fa-search"></i></span>
-      <input type="text" class="form-control" placeholder="Search for something">
-     </div>
-    </div>
-   </form>
-   <ul class="nav navbar-nav navbar-right">
-    <li><a href="newproject.html">Build fundraiser</a ></li>
-    <li class="dropdown">
-     <a class="dropdown-toggle" data-toggle="dropdown">Me <span class="caret"></span></a >
-     <ul class="dropdown-menu" role="menu">
-      <li><a href="home.php">Profile</a ></li>
-      <li><a href="#">Message</a ></li>
-      <li><a href="#">Something else here</a ></li>
-      <li class="divider"></li>
-      <li><a href="logout.php">Log Out</a ></li>
-     </ul>
-    </li>
-   </ul>
-  </div>
- </div>
-</nav>
+<?php include "nav-login.php"; ?>
 <div class="profile-header-container">
  <div class="profile-header-img">
   <img class="img-circle" src="assets/images/photo.jpg"/>
@@ -112,83 +82,61 @@ while($row=mysqli_fetch_array($result))
     <p><a href="editprofile.php">Edit</a></p>
    </div>
 
-<?php 
-$sql1 = "SELECT * FROM Likes,Project WHERE Likes.pid=Project.pid AND Likes.uid='$uid'";
-$result1 = mysqli_query($db,$sql1);
-$pid=array();
-$pname=array();
-while($row1=mysqli_fetch_array($result1))
-{
-  $pid[]=$row1['pid'];
-  $pname[]=$row1['name'];
-}
-?>
+
    <div class="side-block">
     <p><b><center>Likes</center></b></p >
-    <p><a href="<?php echo "project.php?id=".$pid[0] ?>"><?php echo $pname[0]; ?></a></p >
-    <p><a href="<?php echo "project.php?id=".$pid[1] ?>"><?php echo $pname[1]; ?></a></p >
-    <p><a href="<?php echo "project.php?id=".$pid[2] ?>"><?php echo $pname[2]; ?></a></p >
-    <p><a href="<?php echo "project.php?id=".$pid[3] ?>"><?php echo $pname[3]; ?></a></p >
-    <p><a href="<?php echo "project.php?id=".$pid[4] ?>"><?php echo $pname[4]; ?></a></p >
-    <p><a href="<?php echo "project.php?id=".$pid[5] ?>"><?php echo $pname[5]; ?></a></p >
+    <?php 
+    $sql1 = "SELECT * FROM Likes,Project WHERE Likes.pid=Project.pid AND Likes.uid='$uid'";
+    $result1 = mysqli_query($db,$sql1);
+    while($row1=mysqli_fetch_array($result1))
+    {
+      echo "<p><a href='project.php?id={$row1['pid']}'>{$row1['name']}</a></p >";
+    }
+    ?>
    </div>
 
    <div class="side-block">
     <p><b><center>Rates</center></b></p >
-    <p>Project 1: <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half"></i> </p >
-    <p>Project 2: <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></p >
-    <p>Project 3: <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></p >
-   </div>
+    <?php 
+    $sql3 = "SELECT * FROM Rate,Project WHERE Rate.pid=Project.pid AND Rate.uid='$uid'";
+    $result3 = mysqli_query($db,$sql3);
+    while($row3=mysqli_fetch_array($result3))
+    {
+      echo "<p><a href='project.php?id={$row3["pid"]}'>{$row3['name']}</a>: ";
+      $count=$row3['stars'];
+      while($count>0)
+      {
+        echo "<i class='fa fa-star'></i>";
+        $count=$count-1;
+      }
+      echo "</p>";
+    }
+    ?>
+    </div>
   </div>
 
   <div class="col-md-7 col-md-offset-0 container marketing">
    <ol class="breadcrumb">
     <li class="active"><span>My Projects </span></li>
-    <li><a href="comments.html"><span>My Comments </span></a ></li>
+    <li><a href="comments.php"><span>My Comments </span></a ></li>
    </ol>
    <!-- Three columns of text below -->
+   
+
    <?php 
    $sql2 = "SELECT * FROM Project WHERE uid='$uid'";
    $result2 = mysqli_query($db,$sql2);
 
    while($row2=mysqli_fetch_array($result2))
    {
-     $pid=$row2['pid'];
-     $proname=$row2['name'];
-     $description=$row2['description'];
+        echo "\t\t<div class=\"col-lg-3\">\n";
+        echo "\t\t\t<img class='img-circle' src='data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==' alt='Generic placeholder image' width='140' height='140'>\n";
+        echo "\t\t\t<h2> {$row2['name']}</h2>\n";
+        echo "\t\t\t<p> {$row2['description']}</p>\n";
+        echo "\t\t\t<p><a href='project.php?id={$row2['pid']}'>View details</a></p>\n";
+        echo "\t\t</div>\n";
    }
    ?>
-
-   <div class="col-lg-4">
-    <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="140" height="140">
-    <h2>Heading</h2>
-    <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.</p >
-    <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a ></p >
-   </div><!-- /.col-lg-4 -->
-   <div class="col-lg-4">
-    <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="140" height="140">
-    <h2>Heading</h2>
-    <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.</p >
-    <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a ></p >
-   </div><!-- /.col-lg-4 -->
-   <div class="col-lg-4">
-    <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="140" height="140">
-    <h2>Heading</h2>
-    <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p >
-    <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a ></p >
-   </div><!-- /.col-lg-4 -->
-   <div class="col-lg-4">
-    <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="140" height="140">
-    <h2>Heading</h2>
-    <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p >
-    <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a ></p >
-   </div><!-- /.col-lg-4 -->
-   <div class="col-lg-4">
-    <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="140" height="140">
-    <h2>Heading</h2>
-    <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p >
-    <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a ></p >
-   </div><!-- /.col-lg-4 -->
   </div>
  </div>
 </div>
