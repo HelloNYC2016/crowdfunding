@@ -146,9 +146,9 @@ if(isset($_SESSION['login']) && $_SESSION['login']==true)
         echo "<h4 class='media-heading'>$title</h4>";
         echo "<p>$content</p>";
         echo "<p><span class='reviewer-name'><strong>$user</strong></span><span class='review-date'>$time</span></p>";
-        echo "</div>";
      }
     ?>
+
     </div>
     <br>
     <form action="#">

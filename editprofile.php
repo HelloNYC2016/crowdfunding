@@ -1,7 +1,7 @@
 <?php
 session_start();
-if (isset($_SESSION['email'])) {
-$email = $_SESSION['email'];
+if (isset($_SESSION['uid'])) {
+$uid = $_SESSION['uid'];
 }
 else {
 echo "You have not signed in";
@@ -14,9 +14,9 @@ if (!$db) {
 
 if(isset($_POST['edit_btn']))
 {
-    $query="SELECT * FROM user WHERE email='$email' LIMIT 1";
+    $query="SELECT * FROM user WHERE uid='$uid' LIMIT 1";
     $result=mysqli_query($db,$query);
-    while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+    while ($row=mysqli_fetch_array($result)) {
         $name = $row["name"];
         $hometown = $row["hometown"];
         $interest = $row["interest"];
@@ -38,9 +38,9 @@ if(isset($_POST['edit_btn']))
     }
 
 
-    $sql = "UPDATE user SET name='$newname', hometown='$newhometown', interest='$newinterest' where email='$email'";
+    $sql = "UPDATE user SET name='$newname', hometown='$newhometown', interest='$newinterest' where uid='$uid'";
     mysqli_query($db,$sql);
-    header("location:profile.php");
+    header("location:home.php");
 }
 ?>
 <html>

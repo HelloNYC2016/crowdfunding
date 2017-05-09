@@ -20,7 +20,7 @@
 				<li class="dropdown">
 					<a class="dropdown-toggle" data-toggle="dropdown">Me <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="#">Profile</a></li>
+						<li><a href="home.php">Profile</a></li>
 						<li><a href="#">Message</a></li>
 						<li><a href="#">Something else here</a></li>
 						<li class="divider"></li>
