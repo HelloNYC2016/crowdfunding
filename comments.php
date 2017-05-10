@@ -149,6 +149,14 @@ while($row=mysqli_fetch_array($result))
                         echo "<p>{$updaterow['description']}</p>";
                         echo "<p><span class='project-name'><strong><a href='project.php?id={$updaterow['pid']}'>{$updaterow['name']}</a></strong></span><span class='review-date'>{$updaterow['time']}</span></p>";
                     }
+                    $project = "SELECT p.name, p.pid, u.username, u.uid, p.posttime FROM Follow f, User u, Project p WHERE f.followerID='$uid' AND f.uid=u.uid AND u.uid=p.uid ORDER BY p.posttime desc";
+                    $proresult = mysqli_query($db,$project);
+                    while($prorow=mysqli_fetch_array($proresult))
+                    {       
+                        echo "<h4 class='media-heading'>New Projects</h4>";
+                        echo "<p><a href='project.php?id={$prorow['pid']}'>{$prorow['name']}</p>";
+                        echo "<p><span class='project-name'><strong><a href='home.php?id={$prorow['uid']}'>{$prorow['username']}</a></strong></span><span class='review-date'> {$prorow['posttime']}</span></p>";
+                    }
                     ?>
                 </div>
             </div>

@@ -70,18 +70,22 @@ if(isset($_SESSION['login']) && $_SESSION['login']==true)
             <h2><?php echo $name; ?></h2>
             <p>Post by <?php echo "<a href='home.php?id={$id}'>{$owner}</a>"; ?></h2>
             <p><?php echo $description; ?> </p >
-            <a class="btn btn-primary" href="donate.php" role="button">Donate</a >
-            <button class="btn btn-info" onclick="myFunction()">Like</button>
-            <?php 
-            $rate1 = "SELECT * From Pledge WHERE uid='{$_SESSION['uid']}' AND pid='$pid'";
-            $rate2 = "SELECT * From Rate WHERE uid='{$_SESSION['uid']}' AND pid='$pid'";
-            $find1 = mysqli_query($db, $rate1);
-            $find2 = mysqli_query($db, $rate2);
-            if(mysqli_num_rows($find1)!=0 and mysqli_num_rows($find2)==0)
-            {
-                echo "<a class='btn btn-primary' href='#' role='button'>Rate</a>";
+            <!-- show donate -->
+             <?php
+            $sql = "SELECT status FROM Project WHERE pid='$pid'";
+            $result = mysqli_query($db,$sql);
+            $row = mysqli_fetch_assoc($result);
+            if ($row['status'] == "ongoing") {
+                echo "<a class=\"btn btn-primary\" href= \"donate.php\" role=\"button\">Donate</a >";
+            }
+            ?>       
+            <!-- show like -->
+            <?php
+            if (isset($_SESSION['uid'])) {
+                echo "<button class=\"btn btn-info\" onclick=\"myFunction()\">Like</button>";
             }
             ?>
+            
             <script>
                 function myFunction() {
                     alert("You have followed this project.");
@@ -143,6 +147,59 @@ if(isset($_SESSION['login']) && $_SESSION['login']==true)
         ?>
     </div>
 
+<?php
+    $sql = "SELECT status FROM Project WHERE pid='$pid'";
+    $result = mysqli_query($db,$sql);
+    $row = mysqli_fetch_assoc($result);
+
+    $uid = $_SESSION['uid'];
+    $sql2 = "SELECT * FROM PLEDGE WHERE pid='$pid' AND uid = '$uid'";
+    $result2 = mysqli_query($db,$sql2);
+    if ($row['status'] == "succeeded" && mysqli_num_rows($result2) >= 1) {
+        echo "<div class=\"page-header\"><h3>Rate</h3></div>";
+        echo "<div class=\"page-header\">";
+    }
+    ?>
+    <div class="media">
+        <div class="media-body">
+            <?php
+            $sql3 = "SELECT r.stars, u.username FROM Rate r, User u NATURAL JOIN User WHERE r.uid = u.uid AND pid='$pid'";
+            $result3 = mysqli_query($db,$sql3);
+            while($row3=mysqli_fetch_array($result3))
+            {
+                $count=$row3['stars'];
+                $user=$row3['username'];
+                echo "<p>";
+                while($count>0)
+                {
+                    echo "<i class='fa fa-star'></i>";
+                    $count=$count-1;
+                }
+                echo "</p >";
+                echo "<p><span class='reviewer-name'><strong>$user</strong></span></p >";
+                echo "</br>";
+            }
+            ?>
+        </div>
+
+        <?php
+        $sql = "SELECT status FROM Project WHERE pid='$pid'";
+    $result = mysqli_query($db,$sql);
+    $row = mysqli_fetch_assoc($result);
+
+    $uid = $_SESSION['uid'];
+    $sql2 = "SELECT * FROM PLEDGE WHERE pid='$pid' AND uid = '$uid'";
+    $result2 = mysqli_query($db,$sql2);
+    if ($row['status'] == "succeeded" && mysqli_num_rows($result2) >= 1){
+            echo "<form action=\"postrate.php\" method=\"post\">";
+            echo "<input class=\"form-control\" style=\"width: 100px\"  name=\"stars\" placeholder=\"Rate 1 to 5.\">";
+            echo "<button class=\"btn btn-primary\" style=\"margin-top: 10px\" type=\"submit\">Submit</button>";
+            echo "</form>";
+        }
+        ?>
+    </div>
+
+
     <div class="page-header">
         <h3>Reviews</h3></div>
     <div class="media">
@@ -158,17 +215,23 @@ if(isset($_SESSION['login']) && $_SESSION['login']==true)
                 $user=$row2['username'];
                 echo "<h4 class='media-heading'>$title</h4>";
                 echo "<p>$content</p >";
-                echo "<p><span class='reviewer-name'><strong>$user</strong></span><span class='review-date'>$time</span></p >";
+                echo "<p><span class='reviewer-name'><strong><a href='home.php?id={$row2['uid']}'>{$user}</a></strong></span><span class='review-date'>$time</span></p >";
                 echo "</br>";
             }
             ?>
         </div>
+
         <br>
-        <form action="#">
-            <textarea class="form-control" rows="6" name="comment" placeholder="Comment"></textarea>
-            <br>
-            <button class="btn btn-primary" type="submit" name="comment_btn">Submit</button>
-        </form>
+        <?php
+        if(isset($_SESSION['login'])){
+        echo "<form action='postcom.php' method='POST'>";
+        echo "<textarea class='form-control' rows='1' name='title' placeholder='Title' ></textarea>";
+        echo "<textarea class='form-control' rows='6' name='content' placeholder='Comment'></textarea>";
+        echo "<br>";
+        echo "<input class='btn btn-info' type='submit'>";
+        echo "</form>";
+    }
+    ?>
     </div>
     <footer class="site-footer">
         <div class="container">

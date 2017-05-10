@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html>
 
@@ -14,38 +15,16 @@
 </head>
 
 <body>
-<nav class="navbar navbar-default "  role="navigation">
-    <div class="container-fluid">
-        <!-- Brand -->
-        <div class="navbar-header">
-            <a class="navbar-brand" href="index.html">Fundraiser</a>
-        </div>
-        <!-- Search -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <form class="navbar-form navbar-left" role="search" action="#">
-                <div class="form-group">
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                        <input type="text" class="form-control" placeholder="Search for something">
-                    </div>
-                </div>
-            </form>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="newproject.html">Build fundraiser</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Me <span class="caret"></span></a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Profile</a></li>
-                        <li><a href="#">Message</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li class="divider"></li>
-                        <li><a href="logout.php">Log Out</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<?php
+if(isset($_SESSION['login']) && $_SESSION['login']==true)
+  {
+    include "nav-login.php";
+  }
+  else
+  {
+    include "nav-sign.php";
+  }
+   ?>
 <ol class="breadcrumb">
     <li><a href="<?php $pid = $_GET['id']; echo "project.php?id=".$pid ?>"><span>Project </span></a></li>
     <li class="active"><span>Updates </span></li>
@@ -69,6 +48,26 @@
         </div>
     </div>
 </div>
+
+<?php
+$uid=$_SESSION['uid'];
+$check="SELECT uid FROM Project WHERE pid='$pid'";
+$checkre=mysqli_query($db, $check);
+$row1=mysqli_fetch_array($checkre);
+if ($row1['uid']==$uid)
+{
+    echo "<div>";
+    echo "<br>";
+    echo "<form action='postup.php' method='POST'>";
+    echo "<textarea class='form-control' rows='6' name='description' placeholder='Updates' ></textarea>";
+    echo "</br>";
+    echo "<input class='btn btn-info' type='submit'>";
+    echo "</form>";
+    echo "</div>";
+}
+?>
+
+
 <footer class="site-footer">
     <div class="container">
         <hr>
