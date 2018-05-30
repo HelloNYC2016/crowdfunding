@@ -1,5 +1,5 @@
 # crowdfunding
 
-Apache server + Mysql + PHP crowd funding website, similar to kickstar, build from scratch.
+### Apache server + Mysql + PHP crowd funding website, similar to kickstar, build from scratch.
 
-sdsatoGo
+Go to the document folder to see more information.
